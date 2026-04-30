@@ -6,6 +6,8 @@ import '../../models/city.dart';
 import '../../providers/city_provider.dart';
 import '../../utils/validators.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/image_source_picker.dart';
+import '../../widgets/smart_image.dart';
 
 class ManageAttractionsScreen extends StatelessWidget {
   const ManageAttractionsScreen({super.key});
@@ -65,9 +67,8 @@ class ManageAttractionsScreen extends StatelessWidget {
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(a.imageUrl,
-                          width: 60, height: 60, fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.image)),
+                      child: SmartImage(
+                          source: a.imageUrl, width: 60, height: 60),
                     ),
                     title: Text(a.name,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -168,6 +169,11 @@ class _AttractionEditorSheetState extends State<_AttractionEditorSheet> {
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_image.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please choose or paste an image for this attraction')));
+      return;
+    }
     final provider = context.read<CityProvider>();
     final a = Attraction(
       id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
@@ -238,10 +244,7 @@ class _AttractionEditorSheetState extends State<_AttractionEditorSheet> {
                 maxLines: 3,
                 validator: (v) => Validators.notEmpty(v, label: 'Description'),
               ),
-              CustomTextField(
-                  label: 'Image URL',
-                  controller: _image,
-                  validator: (v) => Validators.notEmpty(v, label: 'Image URL')),
+              ImageSourcePicker(controller: _image, label: 'Attraction image'),
               CustomTextField(label: 'Address', controller: _address),
               CustomTextField(label: 'Phone', controller: _phone),
               CustomTextField(label: 'Website', controller: _website),

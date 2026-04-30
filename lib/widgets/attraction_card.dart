@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../models/attraction.dart';
+import 'smart_image.dart';
 
 class AttractionCard extends StatelessWidget {
   final Attraction attraction;
@@ -49,14 +49,7 @@ class AttractionCard extends StatelessWidget {
                 aspectRatio: 16 / 10,
                 child: Hero(
                   tag: 'attraction-${attraction.id}',
-                  child: CachedNetworkImage(
-                    imageUrl: attraction.imageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (c, u) => Container(color: Colors.grey.shade300),
-                    errorWidget: (c, u, e) => Container(
-                        color: Colors.grey.shade300,
-                        child: const Icon(Icons.broken_image)),
-                  ),
+                  child: SmartImage(source: attraction.imageUrl),
                 ),
               ),
               Positioned.fill(

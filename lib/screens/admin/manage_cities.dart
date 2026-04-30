@@ -5,6 +5,8 @@ import '../../models/city.dart';
 import '../../providers/city_provider.dart';
 import '../../utils/validators.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/image_source_picker.dart';
+import '../../widgets/smart_image.dart';
 
 class ManageCitiesScreen extends StatelessWidget {
   const ManageCitiesScreen({super.key});
@@ -48,9 +50,8 @@ class ManageCitiesScreen extends StatelessWidget {
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(c.imageUrl,
-                          width: 64, height: 64, fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.image)),
+                      child: SmartImage(
+                          source: c.imageUrl, width: 64, height: 64),
                     ),
                     title: Text(c.name,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -134,6 +135,11 @@ class _CityEditorSheetState extends State<_CityEditorSheet> {
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_image.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please choose or paste a city image')));
+      return;
+    }
     final provider = context.read<CityProvider>();
     final city = City(
       id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
@@ -186,10 +192,14 @@ class _CityEditorSheetState extends State<_CityEditorSheet> {
                 maxLines: 3,
                 validator: (v) => Validators.notEmpty(v, label: 'Description'),
               ),
-              CustomTextField(
-                  label: 'Image URL',
-                  controller: _image,
-                  validator: (v) => Validators.notEmpty(v, label: 'Image URL')),
+              ImageSourcePicker(controller: _image, label: 'City image'),
+              if (_image.text.trim().isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                      'Pick a photo or paste a URL - this image is used as the city hero.',
+                      style: TextStyle(color: Colors.red.shade600, fontSize: 12)),
+                ),
               Row(children: [
                 Expanded(
                   child: CustomTextField(

@@ -104,6 +104,40 @@ class ProfileScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent),
                         onPressed: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              icon: Container(
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                    color: Colors.red.shade50,
+                                    shape: BoxShape.circle),
+                                child: const Icon(Icons.logout,
+                                    color: Colors.red, size: 32),
+                              ),
+                              title: const Text('Sign out?'),
+                              content: const Text(
+                                'You will need to log in again to access your account.',
+                                textAlign: TextAlign.center,
+                              ),
+                              actionsAlignment: MainAxisAlignment.spaceEvenly,
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(ctx, false),
+                                    child: const Text('Cancel')),
+                                ElevatedButton.icon(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red),
+                                  icon: const Icon(Icons.logout, size: 18),
+                                  label: const Text('Sign out'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed != true || !context.mounted) return;
                           await context.read<AuthProvider>().logout();
                           if (!context.mounted) return;
                           Navigator.of(context).pushAndRemoveUntil(

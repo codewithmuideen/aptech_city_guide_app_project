@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../models/city.dart';
+import 'smart_image.dart';
 
 class CityCard extends StatelessWidget {
   final City city;
@@ -21,14 +21,7 @@ class CityCard extends StatelessWidget {
           children: [
             SizedBox(
               height: 160,
-              child: CachedNetworkImage(
-                imageUrl: city.imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (c, u) =>
-                    Container(color: Colors.grey.shade300),
-                errorWidget: (c, u, e) =>
-                    Container(color: Colors.grey.shade300, child: const Icon(Icons.broken_image)),
-              ),
+              child: SmartImage(source: city.imageUrl),
             ),
             Padding(
               padding: const EdgeInsets.all(14),

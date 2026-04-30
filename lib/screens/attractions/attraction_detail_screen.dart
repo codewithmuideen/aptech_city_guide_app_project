@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +12,7 @@ import '../../providers/city_provider.dart';
 import '../../services/notification_service.dart';
 import '../../utils/app_theme.dart';
 import '../../widgets/empty_state.dart';
+import '../../widgets/smart_image.dart';
 import '../../widgets/review_tile.dart';
 
 class AttractionDetailScreen extends StatelessWidget {
@@ -109,15 +109,13 @@ class AttractionDetailScreen extends StatelessWidget {
                 gallery.length == 1
                     ? Hero(
                         tag: 'attraction-${attraction.id}',
-                        child: CachedNetworkImage(
-                            imageUrl: gallery.first, fit: BoxFit.cover),
+                        child: SmartImage(source: gallery.first),
                       )
                     : CarouselSlider(
                         items: gallery
-                            .map((url) => CachedNetworkImage(
-                                  imageUrl: url,
-                                  fit: BoxFit.cover,
+                            .map((url) => SizedBox(
                                   width: double.infinity,
+                                  child: SmartImage(source: url),
                                 ))
                             .toList(),
                         options: CarouselOptions(

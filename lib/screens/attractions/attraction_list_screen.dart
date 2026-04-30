@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,6 +12,7 @@ import '../../widgets/attraction_card.dart';
 import '../../widgets/empty_state.dart';
 import '../../widgets/greeting_header.dart';
 import '../../widgets/shimmer_card.dart';
+import '../../widgets/smart_image.dart';
 import '../home/city_selection_screen.dart';
 import '../map/map_screen.dart';
 import '../profile/profile_screen.dart';
@@ -254,15 +254,10 @@ class _TopRatedCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(18),
             child: Hero(
               tag: 'attraction-${attraction.id}',
-              child: CachedNetworkImage(
-                imageUrl: attraction.imageUrl,
-                fit: BoxFit.cover,
+              child: SmartImage(
+                source: attraction.imageUrl,
                 width: 230,
                 height: 190,
-                placeholder: (_, __) => Container(color: Colors.grey.shade300),
-                errorWidget: (_, __, ___) => Container(
-                    color: Colors.grey.shade300,
-                    child: const Icon(Icons.broken_image)),
               ),
             ),
           ),

@@ -155,9 +155,15 @@ profile data.
 Log in as `admin@cityguide.com` / `Admin@123` to reach the **Admin Dashboard**.
 
 ### 11.1 Dashboard at a glance
-- Four statistic cards: **Users**, **Cities**, **Attractions**, **Reviews**.
-- A **Refresh** button in the app bar re-reads from local storage.
-- Four management tiles below.
+- **Gradient hero header** showing the admin avatar, name, and four
+  *glass* stat tiles: **Users / Cities / Places / Reviews**.
+- Three round buttons in the header:
+  - **Dark / Light mode** toggle (switches the whole admin theme)
+  - **Refresh** (re-reads stats from storage)
+  - **Sign out** (always opens a confirmation dialog - "Sign out? You
+    will need to log in again." with Cancel / Sign out)
+- Below the hero: **Management** section with four colored tiles.
+- **Pull down** anywhere on the dashboard to refresh.
 
 ### 11.2 Manage Users
 1. **View**: each row shows the user's avatar, name, email, phone, badges
