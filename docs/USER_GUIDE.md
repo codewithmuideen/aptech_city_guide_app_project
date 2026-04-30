@@ -179,16 +179,28 @@ Log in as `admin@cityguide.com` / `Admin@123` to reach the **Admin Dashboard**.
 5. **Delete**: popup menu > **Delete user**. You cannot delete yourself.
 
 ### 11.3 Manage Cities
-1. **Add**: tap **+ Add City** (bottom-right FAB or `+` icon in the app
-   bar). Fill name, country, description, image URL and coordinates. Save.
-2. **Edit**: tap the pencil on any row.
-3. **Delete**: tap the trash icon. This also removes the city's attractions.
+1. **Add**: tap **+ Add City** (bottom-right FAB or `+` icon in the app bar).
+2. Fill name, country, description, coordinates.
+3. **Image**: tap the dashed image area to **pick a photo from your
+   device** (gallery on phone, file dialog on web/desktop). Or paste an
+   image URL in the text field below. The image preview updates instantly,
+   with **Change** and **Remove** buttons overlaid on the photo.
+4. Save.
+5. **Edit**: tap the pencil on any row.
+6. **Delete**: tap the trash icon. This also removes the city's attractions.
 
 ### 11.4 Manage Attractions
-1. **Add**: tap **+ Add Attraction** (FAB or app-bar icon). Pick a **City**
-   and a **Category**, fill in details, add coordinates, save.
-2. **Edit**: tap the pencil on any row.
-3. **Delete**: tap the trash. This also removes the attraction's reviews.
+1. **Add**: tap **+ Add Attraction** (FAB or app-bar icon).
+2. Pick a **City** and a **Category**, fill in details, coordinates.
+3. **Image**: same picker as cities - tap to choose a file from your
+   device, or paste a URL.
+4. Save.
+5. **Edit**: tap the pencil on any row.
+6. **Delete**: tap the trash. This also removes the attraction's reviews.
+
+> Photos picked from a device are stored as base64 data URLs inside the
+> same `imageUrl` field, so the rest of the app (cards, hero, detail page)
+> renders them transparently.
 
 ### 11.5 Manage Reviews
 - Full list of reviews, newest first. Each entry shows the reviewer's
@@ -198,7 +210,11 @@ Log in as `admin@cityguide.com` / `Admin@123` to reach the **Admin Dashboard**.
 - Tap **Delete** under any review to remove offensive or inappropriate content.
 
 ### 11.6 Logging out
-Tap the exit icon at the top-right of the Admin Dashboard.
+Tap the **Sign out** circle in the top-right of the gradient hero. A
+confirmation dialog asks *"Sign out? You will need to log in again to
+access the admin dashboard."* with **Cancel** and **Sign out** buttons.
+The same confirmation now appears for regular users when they sign out
+from the Profile tab.
 
 ### 11.7 Where the data lives
 All data is persisted on-device via `shared_preferences` (JSON). When
