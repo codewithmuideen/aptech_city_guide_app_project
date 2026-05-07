@@ -33,6 +33,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
     await context.read<AdminUsersProvider>().load();
   }
 
+  /// Trims the displayed greeting so it fits beside the avatar + 3 action
+  /// buttons even on narrow phones. "Administrator" -> "Admin"; otherwise
+  /// uses the first word of the name.
+  String _shortName(String? full) {
+    final raw = (full ?? 'Admin').trim();
+    if (raw.toLowerCase() == 'administrator') return 'Admin';
+    final first = raw.split(RegExp(r'\s+')).first;
+    return first.length > 12 ? '${first.substring(0, 12)}.' : first;
+  }
+
   Future<void> _confirmLogout() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -110,9 +120,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       ProfileAvatar(
                         name: auth.user?.name ?? 'Admin',
                         base64Image: auth.user?.profileImage,
-                        size: 50,
+                        size: 46,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,15 +131,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
                               'Admin Dashboard',
                               style: TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   letterSpacing: 0.4),
                             ),
                             Text(
-                              'Hi, ${auth.user?.name ?? 'Administrator'}',
+                              'Hi, ${_shortName(auth.user?.name)}',
                               style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 22,
+                                  fontSize: 19,
                                   fontWeight: FontWeight.bold),
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
@@ -162,7 +173,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     physics: const NeverScrollableScrollPhysics(),
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                    childAspectRatio: 0.95,
+                    childAspectRatio: 0.78,
                     children: [
                       _GlassStat(
                           icon: Icons.group,
@@ -307,24 +318,33 @@ class _GlassStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.fromLTRB(6, 10, 6, 12),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.16),
         border: Border.all(color: Colors.white.withOpacity(0.2)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Icon(icon, color: Colors.white, size: 22),
-          const SizedBox(height: 4),
           Text('$value',
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-          Text(label,
-              style: const TextStyle(color: Colors.white70, fontSize: 11)),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  height: 1)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
         ],
       ),
     );
